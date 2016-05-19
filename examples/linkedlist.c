@@ -59,7 +59,7 @@ int main(void)
 
     printf("Popping 1 element!\n");
     List_pop(list2);
-    List_print(list2, Int_printer);
+    List_print(list2, Printer);
 
     List_destroy(list2);
 }
