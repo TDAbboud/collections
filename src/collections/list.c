@@ -1,5 +1,42 @@
 #include "list.h"
 
+/** Private Methods **/
+static void *List_remove(List *list, ListNode *node)
+{ // Remove an element from the list (Do not use directly! Use List_pop)
+    void *result = NULL;
+
+    if (list->count == 0 || list->last == NULL || list->first == NULL) {
+        return NULL;
+    }
+
+    // Check head deletion
+    if (node == list->first && node == list->last) {
+        // Head deletion with 1 element in list
+        list->first = NULL;
+        list->last = NULL;
+    } else if (node == list->first) {
+        // Just head deletion
+        list->first->prev = NULL;
+        list->first = list->first->next;
+    } else if (node == list->last) {
+        // Just tail deletion
+        list->last = node->prev;
+        list->last->next = NULL;
+    } else {
+        // Deletion somewhere in the middle
+        ListNode *before = node->prev;
+        ListNode *after = node->next;
+        before->next = after;
+        after->prev = before;
+    }
+
+    list->count--;
+    result = node->value;
+    free(node);
+    return result;
+}
+
+/** Public Methods **/
 List *List_create()
 {
     List *list = malloc(sizeof(List));
@@ -57,41 +94,6 @@ void *List_pop(List *list)
 { // Return the last node
     ListNode *node = list->last;
     return (node != NULL) ? List_remove(list, node): NULL;
-}
-
-void *List_remove(List *list, ListNode *node)
-{ // Remove an element from the list (Do not use directly! Use List_pop)
-    void *result = NULL;
-    
-    if (list->count == 0 || list->last == NULL || list->first == NULL) {
-        return NULL;
-    }
-
-    // Check head deletion
-    if (node == list->first && node == list->last) {
-        // Head deletion with 1 element in list
-        list->first = NULL; 
-        list->last = NULL; 
-    } else if (node == list->first) {
-        // Just head deletion 
-        list->first->prev = NULL;
-        list->first = list->first->next;
-    } else if (node == list->last) {
-        // Just tail deletion
-        list->last = node->prev;
-        list->last->next = NULL;
-    } else {
-        // Deletion somewhere in the middle 
-        ListNode *before = node->prev;
-        ListNode *after = node->next;
-        before->next = after;
-        after->prev = before;
-    }
-
-    list->count--;
-    result = node->value;
-    free(node);
-    return result;
 }
 
 void List_print(List *list, void (*fn)(void *value))
