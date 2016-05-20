@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <collections/list.h>
+#include <list.h>
 
 typedef enum Type {
     INT,

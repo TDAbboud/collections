@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <collections/list.h>
+#include <list.h>
 #include <assert.h>
 
 static List *list = NULL;
