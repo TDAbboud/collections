@@ -45,7 +45,7 @@ tests: $(TESTS)
 
 # Compile the test files and link the library
 $(TESTS): $(TEST_SRC)
-	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
 
 valgrind:
 	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
@@ -78,6 +78,11 @@ check:
 	@egrep $(BADFUNCS) $(SOURCES) || true
 
 # The Examples
-examples: CFLAGS += $(TARGET)
 examples: $(EXAMPLES)
 	@echo Compiled the examples
+
+# Compile the test files and link the library
+$(EXAMPLES): LDFLAGS += -static $(LIB_PREFIX)/$(TARGET)
+$(EXAMPLES): $(EXAMPLES_SRC)
+	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
+
