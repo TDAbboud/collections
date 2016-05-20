@@ -1,5 +1,12 @@
+OS := $(shell uname)
+# custom LDFLAGS
+ifeq ($(OS), Darwin)
+	MYLD_FLAGS=
+else
+	MYLD_FLAGS=-static
+endif
+
 CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
-LDFLAGS=
 LIBS=-ldl $(OPTLIBS)
 PREFIX?=/usr/local
 
@@ -39,13 +46,13 @@ build:
 
 # The Unit Tests
 .PHONY: tests
-tests: LDFLAGS += -static $(LIB_PREFIX)/$(TARGET)
+tests: MYLD_FLAGS += $(LIB_PREFIX)/$(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
 
 # Compile the test files and link the library
 $(TESTS): $(TEST_SRC)
-	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $@.c -o $@ $(MYLD_FLAGS)
 
 valgrind:
 	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
@@ -82,7 +89,7 @@ examples: $(EXAMPLES)
 	@echo Compiled the examples
 
 # Compile the test files and link the library
-$(EXAMPLES): LDFLAGS += -static $(LIB_PREFIX)/$(TARGET)
+$(EXAMPLES): MYLD_FLAGS += $(LIB_PREFIX)/$(TARGET)
 $(EXAMPLES): $(EXAMPLES_SRC)
-	$(CC) $(CFLAGS) $@.c -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $@.c -o $@ $(MYLD_FLAGS)
 
