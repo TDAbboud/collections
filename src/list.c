@@ -96,6 +96,12 @@ void *List_pop(List *list)
     return (node != NULL) ? List_remove(list, node): NULL;
 }
 
+void *List_pop_head(List *list)
+{ // Return the head node
+    ListNode *node = list->first;
+    return (node != NULL) ? List_remove(list, node): NULL;
+}
+
 void List_print(List *list, void (*fn)(void *value))
 { // Print all elements of a list
     ListNode *cur = list->first;

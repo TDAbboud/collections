@@ -23,6 +23,7 @@ void List_clear(List *list);
 void List_clear_destroy(List *list);
 void List_push(List *list, void *value);
 void *List_pop(List *list);
+void *List_pop_head(List *list);
 void List_print(List *list, void (*fn)(void *value));
 
 #define List_count(A) ((A)->count)
