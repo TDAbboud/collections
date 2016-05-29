@@ -16,14 +16,18 @@ To uninstall
 
 Static linking:
 * Compile the program linking in the static library
+```bash
     gcc -static example.c -lcollections
+```
 
 Dynamic Linking:
 * Set the LD_LIBRARY_PATH env variable
     LD_LIBRARY_PATH=/usr/local/lib
     export LD_LIBRARY_PATH
 * compile the program
+```bash
     gcc example.c -lcollections
+```
 
 
 ## Testing
